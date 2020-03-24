@@ -15,7 +15,7 @@ async function main(args) {
   const appTemplatePath = `${appName}.html`;
   const appScriptPath = `${appName}.js`;
 
-  const commit = (await Fs.promises.readFile(__dirname, '../devtools-frontend.commit')).slice(0, 8);
+  const commit = (await Fs.promises.readFile(Path.join(__dirname, '../devtools-frontend.commit'), 'utf-8')).slice(0, 8);
 
   const files = [
     'root.js',
