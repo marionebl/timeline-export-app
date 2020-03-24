@@ -14,6 +14,7 @@ async function main(args) {
   );
   const appName = Path.basename(args[0], Path.extname(args[0]));
 
+  const appDirname = Path.dirname(appManifestPath);
   const appTemplatePath = `${appName}.html`;
   const appScriptPath = `${appName}.js`;
 
@@ -25,16 +26,23 @@ async function main(args) {
   ).slice(0, 8);
 
   const files = [
-    "root.js",
-    "RuntimeInstantiator.js",
     appTemplatePath,
     appScriptPath,
+    'root.js',
+    'Images/**/*',
+    'generated/**/*',
+    'console_counters/**/*',
+    'root/**/*',
+    'protocol_client/**/*',
     ...new Set(
-      flatten(
-        await Promise.all(
-          appManifest.modules.map(({ name }) => getModuleFiles(name))
-        )
-      )
+      flatten([
+        ...(await getImportedFiles(appScriptPath, appDirname)),
+        ...(await Promise.all(
+          appManifest.modules.map(({ name }) =>
+            getModuleFiles(name, appDirname)
+          )
+        ))
+      ])
     )
   ];
 
@@ -51,24 +59,45 @@ async function main(args) {
   );
 }
 
-async function getModuleFiles(moduleName) {
-  const moduleManifestPath = Path.join(
-    process.cwd(),
-    "front_end",
-    moduleName,
-    "module.json"
+async function getImportedFiles(file, appDirname) {
+  const contents = await Fs.promises.readFile(
+    Path.join(appDirname, file),
+    "utf-8"
   );
+  const imports = contents
+    .split("\n")
+    .filter(line => line.startsWith("import"));
+
+  const filePath = Path.join(appDirname, file);
+  const filePaths = imports
+    .map(i => i.split("from"))
+    .filter(f => f.length === 2)
+    .map(([, f]) => f.replace(/[\;|\']/g, "").trim())
+    .map(f => Path.resolve(filePath, "..", f))
+    .map(f => Path.relative(appDirname, f));
+
+  return [
+    ...filePaths,
+    ...flatten(
+      await Promise.all(filePaths.map(f => getImportedFiles(f, appDirname)))
+    )
+  ];
+}
+
+async function getModuleFiles(moduleName, appDirname) {
+  const moduleManifestPath = Path.join(appDirname, moduleName, "module.json");
   const moduleManifest = JSON.parse(
     await Fs.promises.readFile(moduleManifestPath, "utf-8")
   );
-  const prefix = items => items.map(name => Path.join(moduleName, name));
 
   return [
-    ...prefix(moduleManifest.modules),
-    ...prefix(moduleManifest.resources || []),
-    ...prefix(moduleManifest.scripts),
+    `${moduleName}/**/*`,
     ...flatten(
-      await Promise.all((moduleManifest.dependencies || []).map(getModuleFiles))
+      await Promise.all(
+        (moduleManifest.dependencies || []).map(i =>
+          getModuleFiles(i, appDirname)
+        )
+      )
     )
   ];
 }
