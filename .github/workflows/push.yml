@@ -37,10 +37,11 @@ jobs:
     - run: autoninja -C out/Default
       working-directory: ./devtools/devtools-frontend
 
+    - uses: actions/setup-node@v1
+      with:
+        version: 12.x
     - run: node scripts/create-manifest.js front_end/timeline_export_app.json > out/Default/resources/inspector/package.json
       working-directory: ./devtools/devtools-frontend
-      with:
-          version: 12.x
 
   publish:
     runs-on: ubuntu-latest
