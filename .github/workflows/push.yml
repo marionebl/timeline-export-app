@@ -1,0 +1,47 @@
+name: create-and-publish
+on: push
+
+jobs:
+  create:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - run: git clone --depth=1 https://chromium.googlesource.com/chromium/tools/depot_tools.git
+    - run: echo 'export PATH="$PATH:'"$PWD"'/depot_tools"' >> $BASH_ENV
+
+    - run: git clone --depth=1 https://gn.googlesource.com/gn
+    - run: python build/gen.py
+      working-directory: ./gn
+    - run: ninja -C out
+      working-directory: ./gn
+    - run: echo 'export PATH="$PATH:'"$PWD"'/gn/out"' >> $BASH_ENV
+
+    - run: mkdir devtools
+    - run: fetch devtools-frontend
+      working-directory: ./devtools
+    - run: git apply ../../patches/add-timeline_export_app.patch
+      working-directory: ./devtools/devtools-frontend
+    - run: git apply ../../patches/add-timeline-panel-ux.patch
+      working-directory: ./devtools/devtools-frontend
+    - run: glient sync
+      working-directory: ./devtools/devtools-frontend
+    - run: gn gen out/Default
+      working-directory: ./devtools/devtools-frontend
+    - run: autoninja -C out/Default
+      working-directory: ./devtools/devtools-frontend
+
+    - run: node scripts/create-manifest.js out/Default/resources/inspector/timeline_export_app.json > package.json
+      working-directory: ./devtools/devtools-frontend
+      with:
+          version: 12.x
+
+    - run: npm publish
+      working-directory: ./devtools/devtools-frontend/out/Default/resources/inspector
+      with:
+          version: 12.x
+
+  publish:
+    runs-on: ubuntu-latest
+    needs: create
+    steps:
+    - run: env
