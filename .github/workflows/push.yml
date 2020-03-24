@@ -7,10 +7,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - run: apt-get update -y
-    - run: apt-get install git python clang -y
+    - run: sudo apt-get update -y
+    - run: sudo apt-get install git python clang -y
 
-    - run: rm -rf depot_tools gn devtools
     - run: git clone --depth=1 https://chromium.googlesource.com/chromium/tools/depot_tools.git
     - run: echo "::add-path::${{ github.workspace }}/depot_tools"
 
