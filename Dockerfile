@@ -1,4 +1,3 @@
-# marionebl/depot_tools
 FROM ubuntu:latest
 
 RUN apt-get update -y
@@ -6,6 +5,7 @@ RUN apt-get install git python clang -y
 
 RUN mkdir /tools
 WORKDIR /tools
+RUN chmod -R 777 /tools
 
 RUN git clone --depth=1 https://chromium.googlesource.com/chromium/tools/depot_tools.git
 ENV PATH="/tools/depot_tools:${PATH}"
