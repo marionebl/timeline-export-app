@@ -46,7 +46,7 @@ async function main(args) {
     )
   ];
 
-  const suffix = process.env.GITHUB_RUN_ID ? `+${process.env.GITHUB_RUN_ID}` : '';
+  const suffix = process.env.RUN_NUMBER ? `+${process.env.RUN_NUMBER}` : '';
 
   return JSON.stringify(
     {
