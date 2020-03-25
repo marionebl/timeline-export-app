@@ -11,7 +11,7 @@ jobs:
           command: fetch devtools-frontend
           working_directory: ~/repo/devtools
       - run: 
-          command: git checkout \<\< ../../devtools-frontend.commit
+          command: git checkout $(cat ../../devtools-frontend.commit)
           working_directory: ~/repo/devtools/devtools-frontend
       - run: 
           command: git apply ../../patches/add-timeline_export_app.patch
