@@ -40,12 +40,14 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         version: 12.x
-        registry-url: 'https://npm.pkg.github.com'
 
     - run: node ${{ github.workspace }}/scripts/create-manifest.js front_end/timeline_export_app.json > out/Default/resources/inspector/package.json
       working-directory: ./devtools/devtools-frontend
+      env:
+        GITHUB_RUN_ID: ${{github.run_id}}
 
-    - run: npm publish
+    - run: npm publish --access=public
       working-directory: ./devtools/devtools-frontend/out/Default/resources/inspector
+      continue-on-error: true
       env:
         NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

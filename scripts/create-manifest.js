@@ -46,12 +46,14 @@ async function main(args) {
     )
   ];
 
+  const suffix = process.env.GITHUB_RUN_ID ? `+${process.env.GITHUB_RUN_ID}` : '';
+
   return JSON.stringify(
     {
       ...pkg,
-      version: pkg.version.includes("-")
+      version: pkg.version.includes("+")
         ? pkg.version
-        : `${pkg.version}-${commit}`,
+        : `${pkg.version}-${commit}${suffix}`,
       files
     },
     null,
