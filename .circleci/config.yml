@@ -39,6 +39,7 @@ jobs:
       - checkout
       - attach_workspace:
           at: ~/repo
+      - run: chmod -R 777 ~/repo
       - run: node scripts/create-manifest.js ~/repo/front_end/timeline_export_app.json > ~/repo/out/Default/resources/inspector/package.json
       - run: 
           command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/repo/.npmrc
