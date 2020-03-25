@@ -1,7 +1,7 @@
 FROM ubuntu:latest
 
-RUN sudo apt-get update -y
-RUN sudo apt-get install git python clang -y
+RUN apt-get update -y
+RUN apt-get install git python clang -y
 
 RUN mkdir /tools
 WORKDIR /tools
