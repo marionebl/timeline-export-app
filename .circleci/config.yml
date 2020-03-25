@@ -23,7 +23,7 @@ jobs:
           command: gn gen out/Default
           working_directory: ~/repo/devtools/devtools-frontend
       - run: 
-          command: autoninja -C out/Default
+          command: sudo autoninja -C out/Default
           working_directory: devtools/devtools-frontend
       - persist_to_workspace:
           root: ~/repo/devtools/devtools-frontend
