@@ -39,10 +39,10 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: ~/repo
-      - run: node scripts/create-manifest.js ~/repo/front_end/timeline_export_app.json > ~/repo/out/Default/resources/inspector/package.json
+          at: .
+      - run: node scripts/create-manifest.js ./front_end/timeline_export_app.json > ./out/Default/resources/inspector/package.json
       - run: 
-          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/repo/.npmrc
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
           working_directory:  ~/repo/out/Default/resources/inspector
       - run: 
           command: npm publish --access=public
