@@ -1,0 +1,58 @@
+version: 2.1
+jobs:
+  build:
+    docker:
+      - image: marionebl/depot_tools:latest
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run: mkdir devtools
+      - run: 
+          command: fetch devtools-frontend
+          working_directory: ~/repo/devtools
+      - run: 
+          command: git checkout << ../../devtools-frontend.commit
+          working_directory: ~/repo/devtools/devtools-frontend
+      - run: 
+          command: git apply ../../patches/add-timeline_export_app.patch
+          working_directory: ~/repo/devtools/devtools-frontend
+      - run: 
+          command: git apply ../../patches/adapt-timeline-panel-ux.patch
+          working_directory: ~/repo/devtools/devtools-frontend
+      - run: 
+          command: gn gen out/Default
+          working_directory: ~/repo/devtools/devtools-frontend
+      - run: 
+          command: autoninja -C out/Default
+          working_directory: devtools/devtools-frontend
+      - persist_to_workspace:
+          root: ~/repo/devtools/devtools-frontend
+          paths:
+            - front_end
+            - out/Default/resources/inspector
+
+  publish:
+    docker:
+      - image: circleci/node:12
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/repo
+      - run: node scripts/create-manifest.js ~/repo/front_end/timeline_export_app.json > ~/repo/out/Default/resources/inspector/package.json
+      - run: 
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/repo/.npmrc
+          working_directory:  ~/repo/out/Default/resources/inspector
+      - run: 
+          command: npm publish --access=public
+          working_directory:  ~/repo/out/Default/resources/inspector
+
+
+workflows:
+  version: 2
+  build_and_publish:
+    jobs:
+      - build
+      - publish:
+          requires:
+            - build
