@@ -50,4 +50,4 @@ jobs:
       working-directory: ./devtools/devtools-frontend/out/Default/resources/inspector
       continue-on-error: true
       env:
-        NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
