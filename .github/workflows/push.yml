@@ -7,19 +7,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-
-    - run: sudo apt-get update -y
-    - run: sudo apt-get install git python clang -y
-
-    - run: git clone --depth=1 https://chromium.googlesource.com/chromium/tools/depot_tools.git
-    - run: echo "::add-path::${{ github.workspace }}/depot_tools"
-
-    - run: git clone https://gn.googlesource.com/gn
-    - run: python build/gen.py
-      working-directory: ./gn
-    - run: ninja -C out
-      working-directory: ./gn
-    - run: echo "::add-path::${{ github.workspace }}/gn/out"
+    - uses: ./.github/actions/setup-depot_tools
 
     - run: mkdir devtools
     - run: fetch devtools-frontend

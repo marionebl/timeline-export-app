@@ -1,0 +1,6 @@
+# action.yml
+name: 'Setup depot_tools'
+description: 'Provide depot_tools to your GitHub action'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
