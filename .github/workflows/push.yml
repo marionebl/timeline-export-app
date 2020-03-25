@@ -44,7 +44,7 @@ jobs:
     - run: node ${{ github.workspace }}/scripts/create-manifest.js front_end/timeline_export_app.json > out/Default/resources/inspector/package.json
       working-directory: ./devtools/devtools-frontend
       env:
-        GITHUB_RUN_ID: ${{github.run_id}}
+        GITHUB_RUN_ID: ${{ github.run_id }}
 
     - run: npm publish --access=public
       working-directory: ./devtools/devtools-frontend/out/Default/resources/inspector
