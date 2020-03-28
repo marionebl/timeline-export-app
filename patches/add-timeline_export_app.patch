@@ -81,7 +81,7 @@ index 00000000..d050c845
 +}
 +
 +function main(panel) {
-+  panel._loadFromURL('./profile.json');
++  document.body.dataset.profile && panel._loadFromURL(document.body.dataset.profile);
 +}
 diff --git a/front_end/timeline_export_app.json b/front_end/timeline_export_app.json
 new file mode 100644

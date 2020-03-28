@@ -35,14 +35,14 @@ async function main(args) {
     'root/**/*',
     'protocol_client/**/*',
     ...new Set(
-      flatten([
+      [
         ...(await getImportedFiles(appScriptPath, appDirname)),
         ...(await Promise.all(
           appManifest.modules.map(({ name }) =>
             getModuleFiles(name, appDirname)
           )
         ))
-      ])
+      ].flat(Infinity)
     )
   ];
 
@@ -80,9 +80,7 @@ async function getImportedFiles(file, appDirname) {
 
   return [
     ...filePaths,
-    ...flatten(
-      await Promise.all(filePaths.map(f => getImportedFiles(f, appDirname)))
-    )
+    ...(await Promise.all(filePaths.map(f => getImportedFiles(f, appDirname)))).flat(Infinity)
   ];
 }
 
@@ -94,21 +92,14 @@ async function getModuleFiles(moduleName, appDirname) {
 
   return [
     `${moduleName}/**/*`,
-    ...flatten(
       await Promise.all(
         (moduleManifest.dependencies || []).map(i =>
           getModuleFiles(i, appDirname)
         )
       )
-    )
-  ];
+  ].flat(Infinity);
 }
 
-const flatten = a =>
-  a.reduce(
-    (acc, item) => (Array.isArray(item) ? [...acc, ...item] : [...acc, item]),
-    []
-  );
 
 main(process.argv.slice(2))
   .then(console.log)
