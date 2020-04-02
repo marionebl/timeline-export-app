@@ -1,0 +1,55 @@
+diff --git a/front_end/object_ui/ObjectPropertiesSection.js b/front_end/object_ui/ObjectPropertiesSection.js
+index b1bd2d3b..b60becd8 100644
+--- a/front_end/object_ui/ObjectPropertiesSection.js
++++ b/front_end/object_ui/ObjectPropertiesSection.js
+@@ -974,7 +974,7 @@ export class ObjectPropertyTreeElement extends UI.TreeOutline.TreeElement {
+     }
+ 
+     // https://tc39.es/ecma262/#prod-IdentifierName
+-    const useDotNotation = /^(?:[$_\p{ID_Start}])(?:[$_\u200C\u200D\p{ID_Continue}])*$/u;
++    const useDotNotation = /^(?:[$_\p{ID_Start}])(?:[$_\u200C\u200D\p{ID_Continue}])*$/;
+     const isInteger = /^(?:0|[1-9]\d*)$/;
+ 
+     const parentPath =
+diff --git a/front_end/platform/utilities.js b/front_end/platform/utilities.js
+index 789aca15..4bdece0f 100644
+--- a/front_end/platform/utilities.js
++++ b/front_end/platform/utilities.js
+@@ -784,7 +784,7 @@ self.base64ToSize = function(content) {
+  */
+ self.unescapeCssString = function(input) {
+   // https://drafts.csswg.org/css-syntax/#consume-escaped-code-point
+-  const reCssEscapeSequence = /(?<!\\)\\(?:([a-fA-F0-9]{1,6})|(.))[\n\t\x20]?/gs;
++  const reCssEscapeSequence = /\\(?:([a-fA-F0-9]{1,6})|(.))[\n\t\x20]?/g;
+   return input.replace(reCssEscapeSequence, (_, $1, $2) => {
+     if ($2) {  // Handle the single-character escape sequence.
+       return $2;
+diff --git a/front_end/profiler/HeapSnapshotGridNodes.js b/front_end/profiler/HeapSnapshotGridNodes.js
+index f947a821..48f82a3a 100644
+--- a/front_end/profiler/HeapSnapshotGridNodes.js
++++ b/front_end/profiler/HeapSnapshotGridNodes.js
+@@ -678,15 +678,15 @@ export class HeapSnapshotGenericObjectNode extends HeapSnapshotGridNode {
+       dataDisplayDelegate.showObject(String(this.snapshotNodeId), ls`Summary`);
+     });
+ 
+-    if (this._referenceName) {
+-      for (const match of this._referenceName.matchAll(/\((?<objectName>[^@)]*) @(?<snapshotNodeId>\d+)\)/g)) {
+-        const {objectName, snapshotNodeId} = /** @type {!{objectName:string, snapshotNodeId:string}} */ (match.groups);
+-        contextMenu.revealSection().appendItem(
+-            ls`Reveal object '${objectName}' with id @${snapshotNodeId} in Summary view`, () => {
+-              dataDisplayDelegate.showObject(snapshotNodeId, ls`Summary`);
+-            });
+-      }
+-    }
++    // if (this._referenceName) {
++    //   for (const match of this._referenceName.matchAll(/\((?<objectName>[^@)]*) @(?<snapshotNodeId>\d+)\)/g)) {
++    //     const {objectName, snapshotNodeId} = /** @type {!{objectName:string, snapshotNodeId:string}} */ (match.groups);
++    //     contextMenu.revealSection().appendItem(
++    //         ls`Reveal object '${objectName}' with id @${snapshotNodeId} in Summary view`, () => {
++    //           dataDisplayDelegate.showObject(snapshotNodeId, ls`Summary`);
++    //         });
++    //   }
++    // }
+ 
+     if (heapProfilerModel) {
+       contextMenu.revealSection().appendItem(ls`Store as global variable`, async () => {
