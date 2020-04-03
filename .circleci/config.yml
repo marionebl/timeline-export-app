@@ -23,6 +23,9 @@ jobs:
           command: git apply ../../patches/fix-firefox-crash.patch
           working_directory: ~/repo/devtools/devtools-frontend
       - run: 
+          command: git apply ../../patches/feat-time-window-links.patch
+          working_directory: ~/repo/devtools/devtools-frontend
+      - run: 
           command: gn gen out/Default
           working_directory: ~/repo/devtools/devtools-frontend
       - run: chmod -R 777 ~/repo
