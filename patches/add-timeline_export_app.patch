@@ -132,8 +132,11 @@ index 00000000..b81f0000
 +        window.location.hash = ['start:', startTime.toFixed(2), '::', 'end:', endTime.toFixed(2)].join('');
 +      });
 +    });
-+
-+  panel._loadFromURL('./profile.json');
+
++  const queryParamUrl = new URL(window.location.href).searchParams.get('url');
++  panel._loadFromURL(
++    queryParamUrl != null ? queryParamUrl : './profile.json'
++  );
 +}
 diff --git a/front_end/timeline_export_app.json b/front_end/timeline_export_app.json
 new file mode 100644
