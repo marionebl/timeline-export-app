@@ -52,7 +52,7 @@ new file mode 100644
 index 00000000..b81f0000
 --- /dev/null
 +++ b/front_end/timeline_export_app.js
-@@ -0,0 +1,82 @@
+@@ -0,0 +1,85 @@
 +// Copyright 2018 The Chromium Authors. All rights reserved.
 +// Use of this source code is governed by a BSD-style license that can be
 +// found in the LICENSE file.
