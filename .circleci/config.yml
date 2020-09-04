@@ -22,6 +22,12 @@ jobs:
       - run: 
           command: git apply ../../patches/fix-firefox-crash.patch
           working_directory: ~/repo/devtools/devtools-frontend
+      - run:
+          command: cp ../../patches/files/compiler.gni config/compiler/compiler.gni
+          working_directory: ~/repo/devtools/devtools-frontend
+      - run:
+          command: cp ../../patches/files/toolchain.gni build/toolchain/toolchain.gni
+          working_directory: ~/repo/devtools/devtools-frontend
       - run: 
           command: gn gen out/Default
           working_directory: ~/repo/devtools/devtools-frontend
