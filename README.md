@@ -26,3 +26,24 @@ node scripts/create-manifest.js out/Default/resources/inspector/timeline_export_
 cd out/Default/resources/inspector
 npm publish
 ```
+
+## Local development
+
+```
+docker run -it --mount type=bind,source="$PWD,target=/repo" marionebl/depot_tools:latest /bin/sh
+cd /repo
+mkdir devtools
+cd devtools
+fetch devtools-frontend
+git checkout $(cat ../../devtools-frontend.commit)
+node ../../scripts/apply-patches.js ../../patches/
+gn gen out/Default
+autoninja -C out/Default
+npx serve out/Default/resources/inspector
+```
+
+## Rebuild docker image
+
+```
+docker build -t marionebl/depot_tools .
+```

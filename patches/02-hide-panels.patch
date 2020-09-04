@@ -1,0 +1,14 @@
+diff --git a/front_end/timeline/TimelinePanel.js b/front_end/timeline/TimelinePanel.js
+index 717344fa8..50348771e 100644
+--- a/front_end/timeline/TimelinePanel.js
++++ b/front_end/timeline/TimelinePanel.js
+@@ -152,6 +152,9 @@ export class TimelinePanel extends UI.Panel.Panel {
+         Extensions.ExtensionServer.Events.TraceProviderAdded, this._appendExtensionsToToolbar, this);
+     SDK.SDKModel.TargetManager.instance().addEventListener(
+         SDK.SDKModel.Events.SuspendStateChanged, this._onSuspendStateChanged, this);
++
++    this._panelToolbar.element.style = 'display: none';
++    this._panelRightToolbar.element.style = 'display: none';
+   }
+ 
+   /**

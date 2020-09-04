@@ -1,0 +1,13 @@
+diff --git a/scripts/check_gn.js b/scripts/check_gn.js
+index 8e3967fbc..cdb3dcb31 100644
+--- a/scripts/check_gn.js
++++ b/scripts/check_gn.js
+@@ -10,7 +10,7 @@ const FRONTEND_PATH = path.resolve(__dirname, '..', 'front_end');
+ 
+ const manifestModules = [];
+ for (const config
+-         of ['inspector.json', 'devtools_app.json', 'js_app.json', 'node_app.json', 'shell.json', 'worker_app.json']) {
++         of ['inspector.json', 'devtools_app.json', 'js_app.json', 'node_app.json', 'shell.json', 'worker_app.json', 'timeline_viewer_app.json']) {
+   manifestModules.push(...require(path.resolve(FRONTEND_PATH, config)).modules);
+ }
+ 

@@ -1,0 +1,36 @@
+diff --git a/BUILD.gn b/BUILD.gn
+index 672ae1941..8bcb8f75a 100644
+--- a/BUILD.gn
++++ b/BUILD.gn
+@@ -131,6 +131,7 @@ application_templates = [
+   "front_end/node_app.html",
+   "front_end/toolbox.html",
+   "front_end/worker_app.html",
++  "front_end/timeline_export_app.html",
+ ]
+ 
+ generated_applications_html = [
+@@ -142,6 +143,7 @@ generated_applications_html = [
+   "$resources_out_dir/node_app.html",
+   "$resources_out_dir/toolbox.html",
+   "$resources_out_dir/worker_app.html",
++  "$resources_out_dir/timeline_export_app.html",
+ ]
+ 
+ generated_applications_js = [
+@@ -153,6 +155,7 @@ generated_applications_js = [
+   "$resources_out_dir/shell.js",
+   "$resources_out_dir/toolbox.js",
+   "$resources_out_dir/worker_app.js",
++  "$resources_out_dir/timeline_export_app.js",
+ ]
+ 
+ generated_non_autostart_non_remote_modules = [
+@@ -264,6 +267,7 @@ devtools_applications = [
+   "toolbox",
+   "wasmparser_worker_entrypoint",
+   "worker_app",
++  "timeline_export_app",
+ ]
+ 
+ #-------------------------------------------------------------------------------

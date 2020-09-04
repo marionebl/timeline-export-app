@@ -16,13 +16,7 @@ jobs:
           command: git checkout $(cat ../../devtools-frontend.commit)
           working_directory: ~/repo/devtools/devtools-frontend
       - run: 
-          command: git apply ../../patches/add-timeline_export_app.patch
-          working_directory: ~/repo/devtools/devtools-frontend
-      - run: 
-          command: git apply ../../patches/adapt-timeline-panel-ux.patch
-          working_directory: ~/repo/devtools/devtools-frontend
-      - run: 
-          command: git apply ../../patches/fix-firefox-crash.patch
+          command: node ../../scripts/apply-patches.js ../../patches/
           working_directory: ~/repo/devtools/devtools-frontend
       - run: 
           command: gn gen out/Default
