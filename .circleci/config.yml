@@ -3,6 +3,8 @@ jobs:
   build:
     docker:
       - image: marionebl/depot_tools:latest
+    environment:
+      TAR_OPTIONS: --no-same-owner
     working_directory: ~/repo
     steps:
       - checkout
