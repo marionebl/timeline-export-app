@@ -15,6 +15,15 @@ jobs:
       - run: 
           command: git checkout $(cat ../../devtools-frontend.commit)
           working_directory: ~/repo/devtools/devtools-frontend
+      - run:
+          command: gclient sync
+          working_directory: ~/repo/devtools/devtools-frontend
+      - run:
+          command: gclient sync --with_branch_heads
+          working_directory: ~/repo/devtools/devtools-frontend
+      - run:
+          command: gclient runhooks
+          working_directory: ~/repo/devtools/devtools-frontend
       - run: 
           command: git apply ../../patches/add-timeline_export_app.patch
           working_directory: ~/repo/devtools/devtools-frontend
@@ -23,12 +32,6 @@ jobs:
           working_directory: ~/repo/devtools/devtools-frontend
       - run: 
           command: git apply ../../patches/fix-firefox-crash.patch
-          working_directory: ~/repo/devtools/devtools-frontend
-      - run:
-          command: cp ../../patches/files/compiler.gni build/config/compiler/compiler.gni
-          working_directory: ~/repo/devtools/devtools-frontend
-      - run:
-          command: cp ../../patches/files/toolchain.gni build/toolchain/toolchain.gni
           working_directory: ~/repo/devtools/devtools-frontend
       - run: 
           command: gn gen out/Default
