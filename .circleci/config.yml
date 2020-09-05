@@ -3,6 +3,8 @@ jobs:
   build:
     docker:
       - image: marionebl/depot_tools:latest
+    environment:
+      TAR_OPTIONS: --no-same-owner
     working_directory: ~/repo
     steps:
       - checkout
@@ -21,6 +23,12 @@ jobs:
           working_directory: ~/repo/devtools/devtools-frontend
       - run: 
           command: git apply ../../patches/fix-firefox-crash.patch
+          working_directory: ~/repo/devtools/devtools-frontend
+      - run:
+          command: cp ../../patches/files/compiler.gni build/config/compiler/compiler.gni
+          working_directory: ~/repo/devtools/devtools-frontend
+      - run:
+          command: cp ../../patches/files/toolchain.gni build/toolchain/toolchain.gni
           working_directory: ~/repo/devtools/devtools-frontend
       - run: 
           command: gn gen out/Default
@@ -42,7 +50,6 @@ jobs:
       RUN_NUMBER: << pipeline.number >>
     working_directory: ~/repo
     steps:
-      - checkout
       - attach_workspace:
           at: .
       - run: node scripts/create-manifest.js ./front_end/timeline_export_app.json > ./out/Default/resources/inspector/package.json
@@ -60,5 +67,9 @@ workflows:
     jobs:
       - build
       - publish:
+          filters:
+            branches:
+              only:
+                - master
           requires:
             - build
