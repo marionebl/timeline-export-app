@@ -53,6 +53,7 @@ jobs:
       RUN_NUMBER: << pipeline.number >>
     working_directory: ~/repo
     steps:
+      - checkout
       - attach_workspace:
           at: .
       - run: node scripts/create-manifest.js ./front_end/timeline_export_app.json > ./out/Default/resources/inspector/package.json
