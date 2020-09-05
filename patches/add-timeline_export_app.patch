@@ -52,7 +52,7 @@ new file mode 100644
 index 00000000..b81f0000
 --- /dev/null
 +++ b/front_end/timeline_export_app.js
-@@ -0,0 +1,82 @@
+@@ -0,0 +1,86 @@
 +// Copyright 2018 The Chromium Authors. All rights reserved.
 +// Use of this source code is governed by a BSD-style license that can be
 +// found in the LICENSE file.
@@ -133,7 +133,11 @@ index 00000000..b81f0000
 +      });
 +    });
 +
-+  panel._loadFromURL('./profile.json');
++  const profileUrl = document.body.dataset.queryable 
++    ? new URLSearchParams(location.search).get('profile')
++    : './profile.json'
++  
++  profileUrl && panel._loadFromURL(profileUrl);
 +}
 diff --git a/front_end/timeline_export_app.json b/front_end/timeline_export_app.json
 new file mode 100644
